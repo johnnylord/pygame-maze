@@ -20,12 +20,15 @@ def main(config_path, autoplay):
     screen = pygame.display.set_mode(game.maze.image.get_size())
     player = game.player
     obstacle_group = game.obstacle_group
+    quit_flag = False
 
     # Play game until player get to the exit point
-    while not game.finish():
+    while not game.finish() and not quit_flag:
         # Event checking
         for event in pygame.event.get():
-            pass
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    quit_flag = True
 
         # Key held down
         keys = pygame.key.get_pressed()
