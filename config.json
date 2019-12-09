@@ -1,0 +1,7 @@
+{
+    "game": {},
+    "maze": {
+        "path": "resource/mazes/simple.txt",
+        "unit": 30
+    }
+}
