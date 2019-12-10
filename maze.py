@@ -72,23 +72,38 @@ class MazeGame:
         # Build Maze
         with open(maze_path, "r") as f:
             # Reserve space for maze
-            lines = f.read().strip('\n').split('\n')
+            lines = f.read().strip('\n').split('\n') # Read the map
             maze = np.zeros((len(lines)*unit, len(lines[0])*unit, 3)) # (height, width, depth)
 
             # Initialize maze row by row
             for row, line in enumerate(lines):
                 for col, symbol in enumerate(line):
                     if symbol == '@':   # black obstacle
+                        # Set the color on this position to black in maze
                         maze[row*unit:row*unit+unit, col*unit:col*unit+unit, :] = 0
-                        obstacle = MazeObstacle((col*unit, row*unit), maze[row*unit:row*unit+unit, col*unit:col*unit+unit, :].copy())
+
+                        # Create obstacle
+                        obstacle = MazeObstacle(
+                                        (col*unit, row*unit),
+                                        maze[row*unit:row*unit+unit, col*unit:col*unit+unit, :].copy())
                         self.obstacles.append(obstacle)
                     elif symbol == '#':   # white road
+                        # Set the color on this position to white in maze
                         maze[row*unit:row*unit+unit, col*unit:col*unit+unit, :] = 255
                     elif symbol == 'S':   # green starting point
+                        # Set the color on this position to white in maze
                         maze[row*unit:row*unit+unit, col*unit:col*unit+unit, :] = 255
-                        self.player = MazePlayer((col*unit, row*unit), maze[row*unit:row*unit+unit, col*unit:col*unit+unit, :].copy(), self.unit)
+
+                        # Create player
+                        self.player = MazePlayer(
+                                        (col*unit, row*unit),
+                                        maze[row*unit:row*unit+unit, col*unit:col*unit+unit, :].copy(),
+                                        self.unit)
                     elif symbol == 'E':   # red exit point
+                        # Set the color on this position to red in maze
                         maze[row*unit:row*unit+unit, col*unit:col*unit+unit, 0] = 255
+
+                        # Record the exit point
                         self.exit_point = (col*unit, row*unit)
                     else:
                         raise Exception("Invalid symbol in maze '%s'" % symbol)
