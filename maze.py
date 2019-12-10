@@ -5,11 +5,16 @@ class MazePlayer(pygame.sprite.Sprite):
 
     def __init__(self, position, texture, unit):
         super().__init__()
+        # player's state
+        self.alive = True
+        self.blood = 255
         self.prev_action = None
+
+        # render information
         self.unit = unit
         self.texture = texture
-        self.texture[:, :, :] = np.array([0, 255, 0])
-        self.image = pygame.surfarray.make_surface(np.transpose(texture ,(1, 0, 2)))
+        self.texture[:, :, :] = np.array([0, self.blood, 0])
+        self.image = pygame.surfarray.make_surface(np.transpose(self.texture ,(1, 0, 2)))
         self.rect = pygame.Rect(position, self.texture.shape[:2])
 
     def up(self):
@@ -37,6 +42,10 @@ class MazePlayer(pygame.sprite.Sprite):
             self.rect.move_ip(-self.unit, 0)
         elif self.prev_action == pygame.K_LEFT:
             self.rect.move_ip(self.unit, 0)
+
+    def ouch(self):
+        """TODO"""
+        pass
 
 
 class MazeObstacle(pygame.sprite.Sprite):
@@ -116,7 +125,8 @@ class MazeGame:
         self.obstacle_group = pygame.sprite.Group(self.obstacles)
 
     def finish(self):
-        if (self.player.rect.left == self.exit_point[0]) and (self.player.rect.top == self.exit_point[1]):
+        if (self.player.rect.left == self.exit_point[0]) and \
+            (self.player.rect.top == self.exit_point[1]):
             return True
         else:
             return False
